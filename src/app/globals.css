@@ -1,0 +1,98 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --brand:       #2d6a4f;
+  --brand-light: #52b788;
+  --accent:      #b5830a;
+  --bg:          #f8f7f4;
+  --surface:     #ffffff;
+  --border:      #e4e0d8;
+  --border-subtle: #eeebe4;
+  --text:        #1a1a1a;
+  --text-2:      #4a4a4a;
+  --text-muted:  #767676;
+  --max-w:       740px;
+  --max-w-wide:  1080px;
+}
+
+html { font-size: 16px; }
+
+body {
+  font-family: 'Georgia', 'Times New Roman', serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: inherit; text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+img { max-width: 100%; height: auto; display: block; }
+
+/* ── Prose (conteúdo de artigos) ─────────────────────────────── */
+.prose {
+  max-width: var(--max-w);
+  font-size: 1.0625rem;
+  line-height: 1.8;
+  color: var(--text);
+}
+.prose h1, .prose h2, .prose h3, .prose h4 {
+  font-family: 'Georgia', serif;
+  line-height: 1.3;
+  margin-top: 2rem;
+  margin-bottom: 0.6rem;
+  color: var(--text);
+}
+.prose h2 { font-size: 1.375rem; }
+.prose h3 { font-size: 1.125rem; }
+.prose p  { margin-bottom: 1.25rem; }
+.prose ul, .prose ol { padding-left: 1.5rem; margin-bottom: 1.25rem; }
+.prose li { margin-bottom: 0.35rem; }
+.prose blockquote {
+  border-left: 3px solid var(--brand-light);
+  padding: 0.6rem 1.25rem;
+  margin: 1.5rem 0;
+  background: #f0faf5;
+  border-radius: 0 6px 6px 0;
+  font-style: italic;
+  color: var(--text-2);
+}
+.prose strong { font-weight: 700; }
+.prose em     { font-style: italic; }
+.prose hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2rem 0;
+}
+.prose pre {
+  background: #f4f4f4;
+  border-radius: 6px;
+  padding: 1rem 1.25rem;
+  overflow-x: auto;
+  font-size: 0.875rem;
+  margin-bottom: 1.25rem;
+}
+.prose code {
+  background: #f0ede7;
+  border-radius: 3px;
+  padding: 0.1em 0.4em;
+  font-size: 0.875em;
+}
+
+/* ── Catechism ────────────────────────────────────────────────── */
+.qa-item {
+  border-bottom: 1px solid var(--border-subtle);
+  padding: 1.25rem 0;
+}
+.qa-item:last-child { border-bottom: none; }
+.qa-number {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--brand);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 0.4rem;
+}
+.qa-question { font-weight: 700; margin-bottom: 0.5rem; font-size: 1rem; }
+.qa-answer   { color: var(--text-2); font-size: 0.95rem; line-height: 1.75; }
