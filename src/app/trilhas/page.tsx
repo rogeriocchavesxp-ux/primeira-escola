@@ -4,6 +4,17 @@ import { getTrilhasPublicadas } from '@/lib/db'
 
 export const revalidate = 300
 
+const COMING_SOON = [
+  { titulo: 'Fundamentos do Casamento',     para_quem: 'Casais em qualquer fase',      descricao: 'Base bíblica do casamento, papéis, comunicação e fidelidade segundo as Escrituras.' },
+  { titulo: 'Pais de Filhos Pequenos',      para_quem: 'Pais com filhos de 0 a 7 anos', descricao: 'Instrução bíblica na primeira infância: fé, oração, disciplina e formação do coração.' },
+  { titulo: 'Culto Doméstico na Prática',   para_quem: 'Toda a família',               descricao: 'Como iniciar e manter o culto doméstico semanal com liturgia, canto e Bíblia.' },
+  { titulo: 'Cosmovisão Cristã',            para_quem: 'Pais e educadores',            descricao: 'Ensinar filhos a ver o mundo pela lente das Escrituras em todas as áreas da vida.' },
+  { titulo: 'Pais de Adolescentes',         para_quem: 'Pais com filhos de 12 a 18 anos', descricao: 'Fé, identidade, cultura e diálogo com adolescentes que questionam a fé.' },
+  { titulo: 'Discernimento Cultural',       para_quem: 'Famílias com filhos',          descricao: 'Como analisar telas, mídias e narrativas culturais à luz de uma cosmovisão bíblica.' },
+  { titulo: 'Transmissão Geracional da Fé', para_quem: 'Pais, avós e educadores',     descricao: 'Salmo 78 como fundamento: como fé, história e memória são passadas de geração em geração.' },
+  { titulo: 'Novo Convertido em Família',   para_quem: 'Famílias com recém-convertidos', descricao: 'Fundamentos da fé cristã para quem está começando a viver o evangelho em família.' },
+]
+
 export const metadata: Metadata = {
   title: 'Trilhas de Formação',
   description: 'Caminhos estruturados de formação bíblica para cada fase da sua família.',
@@ -29,7 +40,53 @@ export default async function TrilhasPage() {
       </header>
 
       {trilhas.length === 0 ? (
-        <p style={{ color: 'var(--text-muted)', fontFamily: 'system-ui, sans-serif' }}>Trilhas em breve.</p>
+        <div>
+          <div style={{
+            background: 'var(--brand-surface)', borderRadius: 12, padding: '1.5rem 2rem',
+            border: '1px dashed var(--border)', marginBottom: '2rem',
+            display: 'flex', alignItems: 'flex-start', gap: '1.25rem', flexWrap: 'wrap',
+          }}>
+            <div style={{ flex: 1, minWidth: 260 }}>
+              <p style={{ fontWeight: 700, color: 'var(--brand)', marginBottom: '0.35rem' }}>
+                Trilhas em preparação.
+              </p>
+              <p style={{ fontSize: '0.875rem', color: 'var(--text-muted)', fontFamily: 'system-ui, sans-serif', lineHeight: 1.6 }}>
+                Estamos finalizando o conteúdo. Veja o que está chegando abaixo.
+              </p>
+            </div>
+            <a href="/#newsletter" style={{
+              background: 'var(--brand)', color: '#fff', padding: '0.55rem 1.25rem',
+              borderRadius: 7, fontSize: '0.82rem', fontWeight: 700,
+              fontFamily: 'system-ui, sans-serif', textDecoration: 'none', flexShrink: 0,
+            }}>
+              Avisar no lançamento
+            </a>
+          </div>
+          <p style={{ fontSize: '0.7rem', fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--brand)', fontFamily: 'system-ui, sans-serif', marginBottom: '1rem' }}>
+            Em preparação
+          </p>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '1rem' }}>
+            {COMING_SOON.map(t => (
+              <div key={t.titulo} style={{
+                background: 'var(--surface)', border: '1px solid var(--border)',
+                borderRadius: 12, padding: '1.5rem', opacity: 0.7,
+              }}>
+                <p style={{ fontWeight: 700, fontSize: '1rem', marginBottom: '0.3rem', color: 'var(--brand)' }}>
+                  {t.titulo}
+                </p>
+                <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontFamily: 'system-ui, sans-serif', marginBottom: '0.75rem' }}>
+                  Para: {t.para_quem}
+                </p>
+                <p style={{ fontSize: '0.875rem', color: 'var(--text-2)', lineHeight: 1.6, fontFamily: 'system-ui, sans-serif' }}>
+                  {t.descricao}
+                </p>
+                <p style={{ fontSize: '0.72rem', color: 'var(--text-muted)', fontFamily: 'system-ui, sans-serif', marginTop: '0.75rem' }}>
+                  Em breve
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
       ) : (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '1rem' }}>
           {trilhas.map(t => (

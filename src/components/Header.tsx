@@ -1,9 +1,10 @@
 import Link from 'next/link'
 
 const NAV = [
-  { href: '/trilhas',   label: 'Trilhas' },
-  { href: '/artigos',   label: 'Artigos' },
-  { href: '/biblioteca', label: 'Biblioteca' },
+  { href: '/#comece-aqui', label: 'Comece Aqui' },
+  { href: '/trilhas',      label: 'Trilhas' },
+  { href: '/artigos',      label: 'Artigos' },
+  { href: '/biblioteca',   label: 'Biblioteca' },
 ]
 
 export default function Header() {
