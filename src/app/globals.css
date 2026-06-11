@@ -1,18 +1,20 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --brand:       #2d6a4f;
-  --brand-light: #52b788;
-  --accent:      #b5830a;
-  --bg:          #f8f7f4;
-  --surface:     #ffffff;
-  --border:      #e4e0d8;
-  --border-subtle: #eeebe4;
-  --text:        #1a1a1a;
-  --text-2:      #4a4a4a;
-  --text-muted:  #767676;
-  --max-w:       740px;
-  --max-w-wide:  1080px;
+  --brand:         #1e2d4f;
+  --brand-light:   #2e4475;
+  --brand-surface: #eef0f5;
+  --accent:        #b08840;
+  --accent-light:  #d4aa60;
+  --bg:            #f7f6f3;
+  --surface:       #ffffff;
+  --border:        #e2ddd5;
+  --border-subtle: #edeae4;
+  --text:          #181818;
+  --text-2:        #3f3f3f;
+  --text-muted:    #72726e;
+  --max-w:         740px;
+  --max-w-wide:    1100px;
 }
 
 html { font-size: 16px; }
@@ -50,10 +52,10 @@ img { max-width: 100%; height: auto; display: block; }
 .prose ul, .prose ol { padding-left: 1.5rem; margin-bottom: 1.25rem; }
 .prose li { margin-bottom: 0.35rem; }
 .prose blockquote {
-  border-left: 3px solid var(--brand-light);
+  border-left: 3px solid var(--accent);
   padding: 0.6rem 1.25rem;
   margin: 1.5rem 0;
-  background: #f0faf5;
+  background: var(--brand-surface);
   border-radius: 0 6px 6px 0;
   font-style: italic;
   color: var(--text-2);

@@ -1,24 +1,31 @@
 import type { MetadataRoute } from 'next'
-import { getSitemapEntries, typeToSegment } from '@/lib/lampas'
+import { getArtigosSlugs, getTrilhasSlugs } from '@/lib/db'
 
-const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://primeiraescola.com.br'
+const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://www.primeiraescola.com.br'
+
+export const revalidate = 3600
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  let entries: Awaited<ReturnType<typeof getSitemapEntries>> = []
-  try { entries = await getSitemapEntries() } catch { /* API offline durante o build */ }
+  let artigoSlugs: string[] = []
+  let trilhaSlugs: string[] = []
 
-  const pages: MetadataRoute.Sitemap = [
-    { url: SITE, lastModified: new Date(), changeFrequency: 'weekly',  priority: 1 },
-    { url: `${SITE}/artigos`,    lastModified: new Date(), changeFrequency: 'weekly', priority: 0.8 },
-    { url: `${SITE}/catecismos`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.8 },
+  try { artigoSlugs = await getArtigosSlugs() } catch {}
+  try { trilhaSlugs = await getTrilhasSlugs() } catch {}
+
+  const static_: MetadataRoute.Sitemap = [
+    { url: SITE,               lastModified: new Date(), changeFrequency: 'weekly',  priority: 1   },
+    { url: `${SITE}/trilhas`,  lastModified: new Date(), changeFrequency: 'weekly',  priority: 0.9 },
+    { url: `${SITE}/artigos`,  lastModified: new Date(), changeFrequency: 'weekly',  priority: 0.8 },
+    { url: `${SITE}/biblioteca`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.8 },
   ]
 
-  const content: MetadataRoute.Sitemap = entries.map(entry => ({
-    url:          `${SITE}/${typeToSegment(entry.content_type)}/${entry.slug}`,
-    lastModified: new Date(entry.updated_at),
-    changeFrequency: 'weekly' as const,
-    priority: 0.7,
+  const artigos: MetadataRoute.Sitemap = artigoSlugs.map(slug => ({
+    url: `${SITE}/artigos/${slug}`, changeFrequency: 'weekly' as const, priority: 0.7,
   }))
 
-  return [...pages, ...content]
+  const trilhas: MetadataRoute.Sitemap = trilhaSlugs.map(slug => ({
+    url: `${SITE}/trilhas/${slug}`, changeFrequency: 'weekly' as const, priority: 0.8,
+  }))
+
+  return [...static_, ...trilhas, ...artigos]
 }
