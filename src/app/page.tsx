@@ -19,11 +19,13 @@ const PILARES = [
 ]
 
 const PERSONAS = [
-  { label: 'Sou Pai',       desc: 'Lidere sua família com fé',         href: '/trilhas?para=pai' },
-  { label: 'Sou Mãe',       desc: 'Forme seus filhos na Palavra',       href: '/trilhas?para=mae' },
-  { label: 'Somos Casal',   desc: 'Construa um lar bíblico',            href: '/trilhas?para=casal' },
-  { label: 'Sou Educador',  desc: 'Ensine com fundamento',              href: '/trilhas?para=educador' },
-  { label: 'Sou Pastor',    desc: 'Recursos para recomendar',           href: '/trilhas?para=pastor' },
+  { label: 'Sou Homem',    desc: 'Identidade e vocação como homem',    href: '/trilhas?para=homem' },
+  { label: 'Sou Mulher',   desc: 'Identidade e vocação como mulher',   href: '/trilhas?para=mulher' },
+  { label: 'Sou Pai',      desc: 'Lidere sua família com fé',          href: '/trilhas?para=pai' },
+  { label: 'Sou Mãe',      desc: 'Forme seus filhos na Palavra',       href: '/trilhas?para=mae' },
+  { label: 'Somos Casal',  desc: 'Construa um lar bíblico',            href: '/trilhas?para=casal' },
+  { label: 'Sou Educador', desc: 'Ensine com fundamento',              href: '/trilhas?para=educador' },
+  { label: 'Sou Pastor',   desc: 'Recursos para recomendar',           href: '/trilhas?para=pastor' },
 ]
 
 export default async function HomePage() {

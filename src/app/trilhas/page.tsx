@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { getTrilhasPublicadas } from '@/lib/db'
+import { getTrilhasPublicadas, getArtigosComecePorAqui } from '@/lib/db'
 
 export const metadata: Metadata = {
   title: 'Trilhas de Formação',
@@ -8,7 +8,22 @@ export const metadata: Metadata = {
 }
 
 const COMING_SOON = [
-  { titulo: 'Fundamentos do Casamento',     para_quem: 'Casais em qualquer fase',           tags: ['casal'] },
+  // Homem
+  { titulo: 'Homem Solteiro',               para_quem: 'Solteiros, viúvos e separados',     tags: ['homem'] },
+  { titulo: 'Sou Marido',                   para_quem: 'Homens casados',                    tags: ['homem', 'casal'] },
+  { titulo: 'Sou Empregado',                para_quem: 'Homens no mercado de trabalho',     tags: ['homem'] },
+  { titulo: 'Sou Empresário',               para_quem: 'Homens que lideram negócios',        tags: ['homem'] },
+  { titulo: 'Sou Pastor',                   para_quem: 'Homens ordenados ao ministério',    tags: ['homem', 'pastor'] },
+  { titulo: 'Sou Educador',                 para_quem: 'Educadores cristãos',               tags: ['homem', 'educador'] },
+  // Mulher
+  { titulo: 'Mulher Solteira',              para_quem: 'Solteiras, viúvas e separadas',     tags: ['mulher'] },
+  { titulo: 'Sou Esposa',                   para_quem: 'Mulheres casadas',                  tags: ['mulher', 'casal'] },
+  { titulo: 'Sou Empregada',                para_quem: 'Mulheres no mercado de trabalho',   tags: ['mulher'] },
+  { titulo: 'Sou Empresária',               para_quem: 'Mulheres que lideram negócios',      tags: ['mulher'] },
+  { titulo: 'Mulher na Igreja',             para_quem: 'Mulheres em ministério e serviço',  tags: ['mulher'] },
+  { titulo: 'Sou Educadora',                para_quem: 'Educadoras cristãs',                tags: ['mulher', 'educador'] },
+  // Família
+  { titulo: 'Somos Casal',                  para_quem: 'Casais em qualquer fase',           tags: ['casal', 'homem', 'mulher'] },
   { titulo: 'Pais de Filhos Pequenos',       para_quem: 'Pais com filhos de 0 a 7 anos',    tags: ['pai', 'mae'] },
   { titulo: 'Culto Doméstico na Prática',    para_quem: 'Toda a família',                    tags: ['pai', 'mae', 'casal', 'educador', 'pastor'] },
   { titulo: 'Cosmovisão Cristã',             para_quem: 'Pais e educadores',                 tags: ['pai', 'mae', 'educador'] },
@@ -19,11 +34,13 @@ const COMING_SOON = [
 ]
 
 const PERSONAS = [
-  { key: 'pai',       label: 'Sou Pai',       desc: 'Lidere sua família com fé' },
-  { key: 'mae',       label: 'Sou Mãe',       desc: 'Forme seus filhos na Palavra' },
-  { key: 'casal',     label: 'Somos Casal',   desc: 'Construa um lar bíblico' },
-  { key: 'educador',  label: 'Sou Educador',  desc: 'Ensine com fundamento' },
-  { key: 'pastor',    label: 'Sou Pastor',    desc: 'Recursos para recomendar' },
+  { key: 'homem',    label: 'Sou Homem',    desc: 'Entenda sua identidade e vocação como homem' },
+  { key: 'mulher',   label: 'Sou Mulher',   desc: 'Entenda sua identidade e vocação como mulher' },
+  { key: 'pai',      label: 'Sou Pai',      desc: 'Lidere sua família com fé' },
+  { key: 'mae',      label: 'Sou Mãe',      desc: 'Forme seus filhos na Palavra' },
+  { key: 'casal',    label: 'Somos Casal',  desc: 'Construa um lar bíblico' },
+  { key: 'educador', label: 'Sou Educador', desc: 'Ensine com fundamento' },
+  { key: 'pastor',   label: 'Sou Pastor',   desc: 'Recursos para recomendar' },
 ]
 
 type Trilha = {
@@ -38,14 +55,19 @@ export default async function TrilhasPage({ searchParams }: Props) {
   const { para } = await searchParams
   const filtro = para ?? null
 
-  const trilhasDB = (await getTrilhasPublicadas()) as Trilha[]
+  const [trilhasDB, artigosIntro] = await Promise.all([
+    getTrilhasPublicadas() as Promise<Trilha[]>,
+    filtro ? getArtigosComecePorAqui(filtro) : Promise.resolve([]),
+  ])
 
   const personaAtiva = PERSONAS.find(p => p.key === filtro)
 
   const trilhasFiltradas = filtro
-    ? trilhasDB.filter(t => {
+    ? (trilhasDB as Trilha[]).filter(t => {
         const pq = (t.para_quem ?? '').toLowerCase()
         const mapa: Record<string, string[]> = {
+          homem:    ['homem', 'homens'],
+          mulher:   ['mulher', 'mulheres'],
           pai:      ['pai', 'pais'],
           mae:      ['mãe', 'mães'],
           casal:    ['casal', 'casais'],
@@ -104,6 +126,55 @@ export default async function TrilhasPage({ searchParams }: Props) {
           </Link>
         ))}
       </div>
+
+      {/* Artigos introdutórios — Comece por Aqui */}
+      {artigosIntro.length > 0 && (
+        <section style={{ marginBottom: '3rem' }}>
+          <p style={{
+            fontSize: '0.7rem', fontWeight: 800, letterSpacing: '0.12em',
+            textTransform: 'uppercase', color: 'var(--brand)',
+            fontFamily: 'system-ui, sans-serif', marginBottom: '1rem',
+          }}>
+            Comece por aqui
+          </p>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+            {artigosIntro.map((a, i) => (
+              <Link key={a.id} href={`/artigos/${a.slug}`} style={{ textDecoration: 'none' }}>
+                <div style={{
+                  background: 'var(--surface)', border: '1px solid var(--border)',
+                  borderRadius: 10, padding: '1rem 1.25rem',
+                  display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '1rem',
+                }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.875rem' }}>
+                    <span style={{
+                      fontSize: '0.72rem', fontWeight: 700, color: 'var(--text-muted)',
+                      fontFamily: 'system-ui, sans-serif', minWidth: 20,
+                    }}>
+                      {String(i + 1).padStart(2, '0')}
+                    </span>
+                    <div>
+                      <p style={{ fontWeight: 600, fontSize: '0.95rem', color: 'var(--brand)', marginBottom: '0.15rem' }}>
+                        {a.titulo}
+                      </p>
+                      {a.subtitulo && (
+                        <p style={{ fontSize: '0.8rem', color: 'var(--text-2)', fontFamily: 'system-ui, sans-serif' }}>
+                          {a.subtitulo}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                  <span style={{
+                    fontSize: '0.75rem', color: 'var(--text-muted)',
+                    fontFamily: 'system-ui, sans-serif', whiteSpace: 'nowrap',
+                  }}>
+                    {a.tempo_leitura} min →
+                  </span>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
 
       {trilhasFiltradas.length === 0 && comingSoonFiltrado.length === 0 ? (
         <div style={{

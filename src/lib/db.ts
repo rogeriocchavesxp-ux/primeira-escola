@@ -52,6 +52,25 @@ export async function getArtigosSlugs() {
   return (data ?? []).map(r => r.slug as string)
 }
 
+export async function getArtigosComecePorAqui(persona?: string) {
+  const db = createServiceClient()
+  const { data: area } = await db.from('areas').select('id').eq('slug', 'comece-por-aqui').single()
+  if (!area) return []
+
+  const base = db
+    .from('artigos')
+    .select('id, slug, titulo, subtitulo, tempo_leitura, tags')
+    .eq('publicado', true)
+    .eq('area_id', area.id)
+    .order('publicado_em', { ascending: true })
+
+  const { data } = persona
+    ? await base.contains('tags', [persona])
+    : await base
+
+  return data ?? []
+}
+
 // ── Trilhas ───────────────────────────────────────────────────────
 
 export async function getTrilhasPublicadas() {
