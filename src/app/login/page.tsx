@@ -16,9 +16,11 @@ export default function LoginPage() {
     e.preventDefault()
     setError('')
     setLoading(true)
-    const { error } = await supabase.auth.signInWithPassword({ email, password })
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password })
     if (error) { setError(error.message); setLoading(false); return }
-    router.push('/admin')
+    const { data: profile } = await supabase
+      .from('profiles').select('is_admin').eq('id', data.user.id).single()
+    router.push(profile?.is_admin ? '/admin' : '/familia')
     router.refresh()
   }
 
