@@ -5,6 +5,7 @@ const NAV = [
   { href: '/trilhas',      label: 'Trilhas' },
   { href: '/artigos',      label: 'Artigos' },
   { href: '/biblioteca',   label: 'Biblioteca' },
+  { href: '/familia',      label: 'Família' },
 ]
 
 export default function Header() {
